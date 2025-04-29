@@ -12,42 +12,10 @@ if [ ! -d "$input_dir" ]; then
 fi
 
 mkdir -p "$output_dir"
-rm -f "$output_dir"/*
+#rm -f "$output_dir"/*
 
-# Копируем только файлы с глубиной ровно 2 
-find "$input_dir" -mindepth 2 -maxdepth 2 -type f -exec cp -n {} "$output_dir" \;
+find "$input_dir" -type f -exec cp -n {} "$output_dir" \;
 
-
-declare -A name_counts
-
-for file in "$output_dir"/*; do
-  if [ -e "$file" ]; then
-    filename=$(basename "$file")
-    if [[ $filename == *.txt ]]; then
-      newname="${filename%.txt}_new.txt"
-      mv "$file" "$output_dir/$newname"
-    else
-      base="${filename%.*}"
-      ext="${filename##*.}"
-      
-      if [ -z "$base" ]; then
-        base="$filename"
-        ext=""
-      fi
-      
-      if [ -n "${name_counts[$base]}" ]; then
-        newname="${base}_small${name_counts[$base]}"
-        if [ -n "$ext" ]; then
-          newname="$newname.$ext"
-        fi
-        mv "$file" "$output_dir/$newname"
-        ((name_counts[$base]++))
-      else
-        name_counts[$base]=1
-      fi
-    fi
-  fi
-done
 
 
 
