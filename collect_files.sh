@@ -11,8 +11,8 @@ if [ ! -d "$input_dir" ]; then
   exit 1
 fi
 
+rm -f "$output_dir"/*
 mkdir -p "$output_dir"
-#rm -f "$output_dir"/*
 
 find "$input_dir" -type f -exec cp -n {} "$output_dir" \;
 
