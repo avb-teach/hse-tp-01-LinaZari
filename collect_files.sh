@@ -16,12 +16,14 @@ rm -f "$output_dir"/*
 find "$input_dir" -mindepth 1 -maxdepth 2 -type f -exec cp -n {} "$output_dir" \!
 
 
-POSTFIX="--small"
+
 
 #обрабаотываем дубл файлы
 
 # идеи брала из https://devhops.ru/linux/bash/scripts/list_files/#small, https://collectingwisdom.com/bash-add-suffix-to-all-files/, https://translated.turbopages.org/proxy_u/en-ru.ru.20e000b7-6810156c-15a9caa3-74722d776562/https/unix.stackexchange.com/questions/468440/find-all-files-with-the-same-name
 
+: '
+POSTFIX="--small"
 
 find "$output_dir" -type f -print0 | awk -v postfix="$POSTFIX" '
 BEGIN { RS="\0" }
@@ -62,8 +64,10 @@ END {
     }
 }
 '
+'
 
-for file in "$output_dir"/*.txt; do  #переименовываем и добавляем суффикс
+
+for file in "$output_dir"/*.txt; do
   if [ -e "$file" ]; then
     mv "$file" "${file%.txt}_new.txt"
   fi
